@@ -53,40 +53,56 @@ Currently, this project works only with a TFT having a ILI9341 chip, a resolutio
 
 ## Software
 
-This project compiles in Arduino IDE but it requires:
-- to add in Arduino IDE the software that support ESP32. The process is explained e.g. in this link
-	https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/
-- to edit the file config.h from this project in order to specify if you plan to use the WiFi and if so if you are using the ESP32 in station mode or in access point mode.
-   When using the WiFi, you must also specify the SSID (= name of the access point) and the password (in access point mode, it must contain at least 8 char)<br>
-Note: the WiFi parameters can also be changed using the SD card. So you do not have to recompile and reflash the firmware.
-To change the WiFi parameter with the SD card, you have to put a file named "wifi.cfg" (respect the case) on the root of SD card.
-The file must contain 3 lines with:<br>
-WIFI="ESP32_ACT_AS_STATION"<br>
-PASSWORD="your password"<br>
-SSID="your access point"<br>
-You can only change: "ESP32_ACT_AS_STATION" (change by "NO_WIFI" or "ESP32_ACT_AS_AP") , "your password" and "your access point"<br>
-Once uploaded from config.h or from file wifi.cfg, the parameters are saved inside the ESP32 and are reused until new parameters are uploaded via SD card.<br>
-So you can remove the "wifi.cfg" file from SD card once the program runs once.
+This project compiles in PlatforIo.
+You need to install Visual Studio Code and PlatformIo ([Instruction here](https://platformio.org/install/ide?install=vscode))
+
+One the project open in PlatforIo, you need to edit the file `src/config.h` from this project in order to specify if you plan to use the WiFi and if so if you are using the ESP32 in station mode or in access point mode.
+   When using the WiFi, you must also specify the `SSID` (= name of the access point) and the `password` (in access point mode, it must contain at least 8 char)<br>
+> ### Note: 
+> The WiFi parameters can also be changed using the SD card. So you do not have to recompile and reflash the firmware.
+> 
+> To change the WiFi parameter with the SD card, you have to put a file named `wifi.cfg` (respect the case) on the root of SD card.
+> 
+> The file must contain 3 lines with:
+> ```cfg
+> WIFI="ESP32_ACT_AS_STATION"
+> PASSWORD="your password"
+> SSID="your access point"
+> ```
+> You can only change: `ESP32_ACT_AS_STATION` (change by `NO_WIFI` or `ESP32_ACT_AS_AP`) , `your password` and `your access point`<br>
+>
+> Once uploaded from `config.h` or from file `wifi.cfg`, the parameters are saved inside the ESP32 and are reused until new parameters are uploaded via SD card.<br>
+> So you can remove the `wifi.cfg` file from SD card once the program runs once.
 
    
 Take care that if you do not use my configuration, you can have:<br>
--  to edit the file User_setup.h included in the TFT_eSPI_ms folder.<br>
-   This file specify the type of display controller and the pins being used by the SPI, the display and the touch screen chip select.
+-  to edit the file platforio.ini.<br>
+   The `bluid_flags` specify the type of display controller, the pins being used by the SPI, the display and the touch screen chip select. If you need another flag, see [this file](https://github.com/Bodmer/TFT_eSPI/blob/master/User_Setup.h) and simply add `-D` before the `#define` name
 -  to edit the file config.h from this project in order to specify some pins being used (e.g. the chip select for the SD card reader)
   
-Note: the pins used for the SPI signals (MOSI, MISO, SCLK) are currently hardcoded.<br>
-Please note that many ESP32 pins are reserved and can't ne used (reserved for bootup, for internal flash, input only,...).
-See doc on ESP for more details.
+> ### Note: 
+> Please note that many ESP32 pins are reserved and can't ne used (reserved for bootup, for internal flash, input only,...).
+>
+> See doc on ESP for more details.
 
-Note: the first time you let ESP32 run this program, the program should execute a calibration of the touch panel.<br>
-The screen should first display an arrow in a corner. You have to click on the corner.<br>
-When done, an arrow should also be displayed sucessively in the 3 others corners. Click each time on the arrow.<br>
-This should normally be done only once. The calibration data are stored automatically in the ESP32.<br>   
-If you want to recalibrate your screen, you should replace, in the "config.h" file, "#define REPEAT_CAL false" by "#define REPEAT_CAL true".<br>
-Change it back to "#define REPEAT_CAL false" afterwards.<br>
-Alternatively you can force a recalibration from the SD card. To do so, you have to put a file named "calibrate.txt" in the root of the SD card.
-The content of the file does not matter (only the file name).
-Remove the file from SD card once calibration is done in order to avoid to do it at each power on.
+> ### Note: 
+> The first time you let ESP32 run this program, the program should execute a calibration of the touch panel.
+> 
+> The screen should first display an arrow in a corner. You have to click on the corner.
+> 
+> When done, an arrow should also be displayed sucessively in the 3 others corners. Click each time on the arrow.
+> 
+> This should normally be done only once. The calibration data are stored automatically in the ESP32.
+> 
+> If you want to recalibrate your screen, you should replace, in the `config.h` file, `#define REPEAT_CAL false` by `#define REPEAT_CAL true`.
+>
+> Change it back to "#define REPEAT_CAL false" afterwards.
+> 
+> Alternatively you can force a recalibration from the SD card. To do so, you have to put a file named `calibrate.txt` in the root of the SD card.
+> 
+> The content of the file does not matter (only the file name).
+> 
+> Remove the file from SD card once calibration is done in order to avoid to do it at each power on.
 
 
 ## Wiring the ESP32
